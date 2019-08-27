@@ -1,4 +1,4 @@
-var LocalStrategy = require('passport-local').Strategy;
+ LocalStrategy = require('passport-local').Strategy;
 var User = require('../app/user.js');
 module.exports = function(passport) {
     
@@ -20,9 +20,6 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
         var newUser = new User();
-        
-
-
         //asynchronous?
         process.nextTick(function() {
             User.findOne({ 'local.email' : email }, function(err, user) {
@@ -35,7 +32,6 @@ module.exports = function(passport) {
                     
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
-
                     newUser.save(function(err) {
                         if (err)
                             throw err;
@@ -67,6 +63,13 @@ module.exports = function(passport) {
     }));
 };
 function email_validation(email){
+
     var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email_regex.test(String(email).toLowerCase());
-    }
+}
+
+function password_validation(password){
+
+    var p_regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    return password_validation.test(String(password));
+}
