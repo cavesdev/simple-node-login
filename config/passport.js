@@ -19,6 +19,9 @@ module.exports = function(passport) {
         passReqToCallback : true
     },
     function(req, email, password, done) {
+        var newUser = new User();
+        
+
 
         //asynchronous?
         process.nextTick(function() {
@@ -28,10 +31,8 @@ module.exports = function(passport) {
 
                 if (user) {
                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
-                } else {
-
-                    var newUser = new User();
-
+                } else if(email_validation(email)== true){
+                    
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
 
@@ -65,3 +66,7 @@ module.exports = function(passport) {
         });
     }));
 };
+function email_validation(email){
+    var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return email_regex.test(String(email).toLowerCase());
+    }
