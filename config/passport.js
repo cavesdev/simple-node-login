@@ -19,8 +19,6 @@ module.exports = function(passport) {
         passReqToCallback : true
     },
     function(req, email, password, done) {
-        var newUser = new User();
-        //asynchronous?
         process.nextTick(function() {
             User.findOne({ 'local.email' : email }, function(err, user) {
                 if (err)
@@ -29,6 +27,8 @@ module.exports = function(passport) {
                 if (user) {
                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'))
                 } else if(email_validation(email)== true){
+                  
+                    var newUser = new User();
                     
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
