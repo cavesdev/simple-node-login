@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', { user : req.user });
     });
-
+    
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated())
             return next();

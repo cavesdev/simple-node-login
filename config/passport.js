@@ -20,7 +20,7 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
 
-        //asynchronous?
+        //asynchronous? son las promises o funciones mas complejas *( programacion funcional)
         process.nextTick(function() {
             User.findOne({ 'local.email' : email }, function(err, user) {
                 if (err)
